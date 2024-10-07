@@ -1,10 +1,11 @@
 import React, { useState ,useEffect} from "react";
 import ItemListCard from '../components/itemlistcard'
 
-
-
 const OrderManagement = () => {
-  const PIZZA_URL = "http://localhost:8080/api/v1/pizza/get-pizza";
+
+  const [listItem , setlistItme] = useState('get-pizza');
+
+  const PIZZA_URL = `http://localhost:8080/api/v1/pizza/${listItem}`;
   
   const [items, setitems] = useState([]);
 
@@ -12,7 +13,7 @@ const OrderManagement = () => {
 async function fetchItemsData() {
   
   try {
-    const res = await fetch(PIZZA_URL);
+    const res = await fetch(PIZZA_URL , {method: 'GET'});
     const data = await res.json();
     console.log(data?.data);
     setitems(data?.data);
@@ -26,8 +27,9 @@ async function fetchItemsData() {
 
 //   -----------to-run-fetch-function-----------------
 useEffect(() => {
+  console.log("Item is : " , listItem);
   fetchItemsData();
-}, []);
+}, [listItem]);
 
 
 
@@ -43,25 +45,25 @@ useEffect(() => {
         <div className="p-4 text-lg font-semibold">Menu</div>
         <nav className="flex-1">
           <ul className="space-y-4 px-4">
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <li onClick={()=>setlistItme('get-pizza')} className="hover:bg-gray-700 p-2 rounded cursor-pointer">
               Pizza
             </li>
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <li onClick={()=>setlistItme('get-burgers')} className="hover:bg-gray-700 p-2 rounded cursor-pointer">
               Burgers
             </li>
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <li onClick={()=>setlistItme('get-pasta')} className="hover:bg-gray-700 p-2 rounded cursor-pointer">
               Pasta
             </li>
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer flex justify-between">
+            <li onClick={()=>setlistItme('get-chinise')} className="hover:bg-gray-700 p-2 rounded cursor-pointer flex justify-between">
               Chinese
             </li>
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <li onClick={()=>setlistItme('get-pizza')} className="hover:bg-gray-700 p-2 rounded cursor-pointer">
               Maggi
             </li>
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <li onClick={()=>setlistItme('get-beverage')} className="hover:bg-gray-700 p-2 rounded cursor-pointer">
               Beverages
             </li>
-            <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
+            <li onClick={()=>setlistItme('get-dessert')} className="hover:bg-gray-700 p-2 rounded cursor-pointer">
               Dessert
             </li>
             <li className="hover:bg-gray-700 p-2 rounded cursor-pointer">
@@ -105,7 +107,7 @@ useEffect(() => {
          {/* -----------------items listed here--------------- */
 
 
-         items.length > 0 ? (
+        items ? (
         <div
         className="grid md:grid-cols-3 sm:grid-cols-2 sx:grid-cols-1 lg:grid-cols-4 max-w-6xl p-2 mx-auto space-y-10 space-x-5
         min-h-[80px]"
